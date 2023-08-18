@@ -13,6 +13,8 @@ extension Color {
     static let bg2 = Color("BG2")
     static let chilly = Color("Chill")
     static let cobalty = Color("Cobalt")
+    static let text = Color("text1")
+    static let alternateText = Color("text2")
 }
 
 extension Image {

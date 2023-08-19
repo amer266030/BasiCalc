@@ -10,14 +10,27 @@ import SwiftUI
 struct CapsuleButton: View {
     let title: String
     let action: () -> Void
+    let color: Color = Color.btn3.opacity(0.5)
     
     var body: some View {
         Button(action: action) {
             Text(title)
             .font(.system(.title3, design: .rounded))
-            .foregroundStyle(Color.text)
+            .bold()
+            .foregroundStyle(Color.text1)
             .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
-            .background(.ultraThinMaterial, in: Capsule())
+            .background {
+                Capsule()
+                    .foregroundStyle(color.shadow(.inner(color: Color.bg1, radius: 1, x: 0, y: 0)))
+                    .blur(radius: 1)
+                    
+            }
+            .background {
+                Capsule()
+                    .foregroundStyle(color.shadow(.inner(color: Color.bg1, radius: 1, x: 0, y: 0)))
+                    .blur(radius: 1)
+                    .background(.thinMaterial, in: Capsule())
+            }
         }
     }
 }
@@ -30,7 +43,7 @@ struct CalculatorButton: View {
     let fontColor: Color
     let action: () -> Void
     
-    init(title: String = "", img: Image? = nil, color: Color = Color.clear, font: Font = Font.system(.largeTitle, design: .rounded), fontColor: Color = Color.text, action: @escaping () -> Void) {
+    init(title: String = "", img: Image? = nil, color: Color = Color.btn3.opacity(0.5), font: Font = Font.system(.largeTitle, design: .rounded), fontColor: Color = Color.text1, action: @escaping () -> Void) {
         self.title = title
         self.img = img
         self.color = color
@@ -50,10 +63,22 @@ struct CalculatorButton: View {
                 }
             }
             .font(font)
+            .bold()
             .foregroundStyle(fontColor)
             .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
-            .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16))
-            .background(color, in: RoundedRectangle(cornerRadius: 16))
+            .background {
+                RoundedRectangle(cornerRadius: 16)
+                    .foregroundStyle(color.shadow(.inner(color: Color.bg1, radius: 2, x: 0, y: 0)))
+                    .blur(radius: 1)
+                    
+            }
+            .background {
+                RoundedRectangle(cornerRadius: 16)
+                    .foregroundStyle(color.shadow(.inner(color: Color.bg1, radius: 2, x: 0, y: 0)))
+                    .blur(radius: 1)
+                    .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 16))
+            }
+            
         }
     }
 }

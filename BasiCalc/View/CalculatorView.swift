@@ -15,12 +15,9 @@ struct CalculatorView: View {
     var body: some View {
         ZStack {
             Group {
-                Image.bgImage
-                    .resizable()
-                    .blur(radius: 20)
-                
                 Rectangle()
-                    .fill(LinearGradient(colors: [Color.bg2, Color.bg1, Color.bg0], startPoint: .bottomLeading, endPoint: .topTrailing))
+                    .fill(LinearGradient(colors: [Color.bg0, Color.bg1], startPoint: .topTrailing, endPoint: .bottomLeading))
+                    .blur(radius: 2)
                     .background(.thickMaterial)
             }
             .ignoresSafeArea()
@@ -33,7 +30,7 @@ struct CalculatorView: View {
                     } label: {
                         Image(systemName: isDarkMode ? "moon" : "sun.max")
                             .font(.largeTitle)
-                            .foregroundStyle(Color.cobalt)
+                            .foregroundStyle(Color.btn1)
                     }
                     Spacer()
                 }
@@ -41,10 +38,18 @@ struct CalculatorView: View {
                 // MARK: - Text input/output
                 VStack {
                     Group {
-                        TextField("Enter Calculation", text: $vm.inputText)
-                            .foregroundStyle(Color.gray)
-                            .font(.system(.body, design: .rounded))
-                            .textFieldStyle(.plain)
+                        VStack(spacing: 8) {
+                            TextField("Enter Calculation", text: $vm.inputText)
+                                .foregroundStyle(Color.gray)
+                                .font(.system(.body, design: .rounded))
+                                .textFieldStyle(.plain)
+                            HStack {
+                                Spacer()
+                                Text(vm.hints)
+                                    .font(.system(.caption, design: .rounded))
+                                    .foregroundStyle(Color.red)
+                            }
+                        }
                         
                         HStack {
                             Spacer()
@@ -61,26 +66,26 @@ struct CalculatorView: View {
                     // MARK: - Capsules
                     GridRow {
                         Group {
-                            CapsuleButton(title: "e") { vm.handleButtonPress(buttonTitle: "e") }
-                            CapsuleButton(title: "µ") { vm.handleButtonPress(buttonTitle: "µ") }
-                            CapsuleButton(title: "sin") { vm.handleButtonPress(buttonTitle: "sin") }
-                            CapsuleButton(title: "deg") { vm.handleButtonPress(buttonTitle: "deg") }
+                            CapsuleButton(title: "(") { vm.handleButtonPress(buttonTitle: "(", type: .pOpen) }
+                            CapsuleButton(title: ")") { vm.handleButtonPress(buttonTitle: ")", type: .pClose) }
+                            CapsuleButton(title: "√") { vm.handleButtonPress(buttonTitle: "√", type: .sqrt) }
+                            CapsuleButton(title: "^") { vm.handleButtonPress(buttonTitle: "^", type: .power) }
                         }
                         .aspectRatio(2, contentMode: .fit)
                     }
                     // MARK: - Calac Btns
                     GridRow {
                         Group {
-                            CalculatorButton(title: "AC", fontColor: Color.alternateText) { vm.handleButtonPress(buttonTitle: "AC") }
-                            CalculatorButton(title: "<-", img: Image(systemName: "delete.backward"), fontColor: Color.alternateText) {
-                                vm.handleButtonPress(buttonTitle: "<-")
+                            CalculatorButton(title: "AC", color: Color.btn4, fontColor: Color.text2) { vm.handleButtonPress(buttonTitle: "AC", type: .ac) }
+                            CalculatorButton(title: "<-", img: Image(systemName: "delete.backward"), color: Color.btn4, fontColor: Color.text2) {
+                                vm.handleButtonPress(buttonTitle: "<-", type: .del)
                             }
-                            CalculatorButton(title: "/", color: Color.cobalty, fontColor: Color.chill) {
-                                vm.handleButtonPress(buttonTitle: "/")
+                            CalculatorButton(title: "/", color: Color.btn2, fontColor: Color.text2) {
+                                vm.handleButtonPress(buttonTitle: "/", type: .divide)
                             }
                             .fontWeight(.bold)
-                            CalculatorButton(title: "*", img: Image(systemName: "staroflife.fill"), color: Color.cobalty, fontColor: Color.chill) {
-                                vm.handleButtonPress(buttonTitle: "*")
+                            CalculatorButton(title: "*", img: Image(systemName: "staroflife.fill"), color: Color.btn2, fontColor: Color.text2) {
+                                vm.handleButtonPress(buttonTitle: "*", type: .multiply)
                             }
                             .fontWeight(.bold)
                         }
@@ -91,8 +96,8 @@ struct CalculatorView: View {
                             CalculatorButton(title: "7") { vm.handleButtonPress(buttonTitle: "7") }
                             CalculatorButton(title: "8") { vm.handleButtonPress(buttonTitle: "8") }
                             CalculatorButton(title: "9") { vm.handleButtonPress(buttonTitle: "9") }
-                            CalculatorButton(title: "-", img: Image(systemName: "minus"), color: Color.cobalty, fontColor: Color.chill) {
-                                vm.handleButtonPress(buttonTitle: "-")
+                            CalculatorButton(title: "-", img: Image(systemName: "minus"), color: Color.btn2, fontColor: Color.text2) {
+                                vm.handleButtonPress(buttonTitle: "-", type: .minus)
                             }
                             .fontWeight(.bold)
                         }
@@ -131,7 +136,7 @@ struct CalculatorView: View {
                                             .foregroundStyle(Color.red)
                                         }
                                         .gridCellColumns(2)
-                                        CalculatorButton(title: ".") { vm.handleButtonPress(buttonTitle: ".") }
+                                        CalculatorButton(title: ".") { vm.handleButtonPress(buttonTitle: ".", type: .dot) }
                                         .aspectRatio(1, contentMode: .fit)
                                     }
                                 }
@@ -143,12 +148,12 @@ struct CalculatorView: View {
                             .gridCellColumns(1)
                             .overlay {
                                 VStack {
-                                    CalculatorButton(title: "+", img: Image(systemName: "plus"), color: Color.cobalty, fontColor: Color.chill) {
-                                        vm.handleButtonPress(buttonTitle: "+")
+                                    CalculatorButton(title: "+", img: Image(systemName: "plus"), color: Color.btn2, fontColor: Color.text2) {
+                                        vm.handleButtonPress(buttonTitle: "+", type: .plus)
                                     }
                                     .fontWeight(.bold)
-                                    CalculatorButton(title: "=", color: Color.chilly, fontColor: Color.white) {
-                                        vm.handleButtonPress(buttonTitle: "=")
+                                    CalculatorButton(title: "=", color: Color.btn1, fontColor: Color.white) {
+                                        vm.handleButtonPress(buttonTitle: "=", type: .equals)
                                     }
 
                                 }
@@ -160,11 +165,6 @@ struct CalculatorView: View {
             .padding(16)
         }
     }
-    
-    
-    
-    
-    
 }
 
 struct CalculatorView_Previews: PreviewProvider {

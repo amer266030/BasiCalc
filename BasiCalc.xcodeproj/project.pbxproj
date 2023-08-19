@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		48E782952A8FAB1F005DDD42 /* Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48E782942A8FAB1F005DDD42 /* Operators.swift */; };
+		48E782972A90DE83005DDD42 /* StringProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48E782962A90DE83005DDD42 /* StringProtocol.swift */; };
 		4DB6FBFC2A8DDE5200A0D350 /* CalculatorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DB6FBFB2A8DDE5200A0D350 /* CalculatorViewModel.swift */; };
 		4DD52ED42A8CCDBA00E3CE44 /* BasiCalcApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DD52ED32A8CCDBA00E3CE44 /* BasiCalcApp.swift */; };
 		4DD52ED62A8CCDBA00E3CE44 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DD52ED52A8CCDBA00E3CE44 /* ContentView.swift */; };
@@ -19,6 +21,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		48E782942A8FAB1F005DDD42 /* Operators.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Operators.swift; sourceTree = "<group>"; };
+		48E782962A90DE83005DDD42 /* StringProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringProtocol.swift; sourceTree = "<group>"; };
 		4DB6FBFB2A8DDE5200A0D350 /* CalculatorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorViewModel.swift; sourceTree = "<group>"; };
 		4DD52ED02A8CCDBA00E3CE44 /* BasiCalc.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BasiCalc.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4DD52ED32A8CCDBA00E3CE44 /* BasiCalcApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasiCalcApp.swift; sourceTree = "<group>"; };
@@ -42,6 +46,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		48E782932A8FAB00005DDD42 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				48E782942A8FAB1F005DDD42 /* Operators.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		4DB6FBFD2A8DDE5900A0D350 /* View */ = {
 			isa = PBXGroup;
 			children = (
@@ -64,6 +76,7 @@
 			children = (
 				4DD52EE92A8CF13200E3CE44 /* DarkModeModifier.swift */,
 				4DD52EE72A8CF0C200E3CE44 /* Constants.swift */,
+				48E782962A90DE83005DDD42 /* StringProtocol.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -88,6 +101,7 @@
 			isa = PBXGroup;
 			children = (
 				4DB6FBFF2A8DDE6600A0D350 /* Helpers */,
+				48E782932A8FAB00005DDD42 /* Model */,
 				4DB6FBFE2A8DDE6000A0D350 /* ViewModel */,
 				4DB6FBFD2A8DDE5900A0D350 /* View */,
 				4DD52ED32A8CCDBA00E3CE44 /* BasiCalcApp.swift */,
@@ -177,6 +191,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				4DB6FBFC2A8DDE5200A0D350 /* CalculatorViewModel.swift in Sources */,
+				48E782952A8FAB1F005DDD42 /* Operators.swift in Sources */,
+				48E782972A90DE83005DDD42 /* StringProtocol.swift in Sources */,
 				4DD52EE82A8CF0C200E3CE44 /* Constants.swift in Sources */,
 				4DD52ED62A8CCDBA00E3CE44 /* ContentView.swift in Sources */,
 				4DD52EE42A8CD04700E3CE44 /* CalculatorView.swift in Sources */,
@@ -324,7 +340,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -354,7 +370,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

@@ -10,14 +10,14 @@ import SwiftUI
 extension Color {
     static let bg0 = Color("BG0")
     static let bg1 = Color("BG1")
-    static let btn1 = Color("Btn1")
-    static let btn2 = Color("Btn2")
-    static let btn3 = Color("Btn3")
-    static let btn4 = Color("Btn4")
-    static let text1 = Color("text1")
-    static let text2 = Color("text2")
+    static let btn1 = Color("BTN1")
+    static let btn2 = Color("BTN2")
+    static let btn3 = Color("BTN3")
+    static let btn4 = Color("BTN4")
+    static let text1 = Color("TEXT1")
+    static let text2 = Color("TEXT2")
 }
 
 extension Image {
-    static let bgImage = Image("BG_Image")
+    static let bgImage = Image("BGIMG")
 }

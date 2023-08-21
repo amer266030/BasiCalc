@@ -19,6 +19,11 @@ struct CalculatorView: View {
                     .fill(LinearGradient(colors: [Color.bg0, Color.bg1], startPoint: .topTrailing, endPoint: .bottomLeading))
                     .blur(radius: 2)
                     .background(.thickMaterial)
+                
+                Image.bgImage
+                    .resizable()
+                    .blur(radius: 10)
+                    .opacity(0.1)
             }
             .ignoresSafeArea()
 
@@ -155,7 +160,6 @@ struct CalculatorView: View {
                                     CalculatorButton(title: "=", color: Color.btn1, fontColor: Color.white) {
                                         vm.handleButtonPress(buttonTitle: "=", type: .equals)
                                     }
-
                                 }
                                 .padding(.vertical, 8)
                             }
@@ -170,6 +174,6 @@ struct CalculatorView: View {
 struct CalculatorView_Previews: PreviewProvider {
     static var previews: some View {
         CalculatorView()
-//            .preferredColorScheme(.dark)
+            .preferredColorScheme(.dark)
     }
 }

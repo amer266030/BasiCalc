@@ -15,7 +15,6 @@ class CalculatorViewModel: ObservableObject {
     
     private var reset = false
     private var canAddOperation: Bool = false
-    private var canAddFraction: Bool = true
     private var numOpenP = 0
     private var numClosedP = 0
     
@@ -31,12 +30,12 @@ class CalculatorViewModel: ObservableObject {
             outputText = "0"
         } else if type == .equals {
             inputText = ""
+            reset = true
             for item in outputText {
                 if item.isNumber {
                     inputText.append("\(item)")
                 }
             }
-            return
         }
         // MARK: - DELETE LAST!
         else if type == .del {
@@ -45,31 +44,32 @@ class CalculatorViewModel: ObservableObject {
             }
         }
         // MARK: - HANDLE SPECIAL CHARACTERS AS THE 1ST INPUT
-        else if inputText.isEmpty && buttonTitle == "." {
-            inputText += "0."
-            canAddFraction = false
-        } else if inputText.isEmpty && (buttonTitle == "-" || buttonTitle == "(" || !operators.contains("\(buttonTitle)")) {
-            inputText.append("\(buttonTitle)")
-        } else if !inputText.isEmpty {
+        else if reset == true || inputText.isEmpty {
+            if type == .dot {
+                inputText = "0."
+                outputText = "0"
+            } else if type == .num {
+                inputText = buttonTitle
+            } else if type == .minus || type == .pOpen || type == .sqrt || !operators.contains("\(buttonTitle)") {
+                inputText.append("\(buttonTitle)")
+            } else if reset == true && !inputText.isEmpty {
+                inputText.append("\(buttonTitle)")
+            }
+            if reset == true { reset = false }
+        }
+        // MARK: - NON EMPTY INPUT
+        else if !inputText.isEmpty {
             // MARK: - LAST CHAR IS AN OPERATOR
             if operators.contains(inputText.last!) {
-                if buttonTitle == "." {
+                if type == .dot {
                     inputText.append("0.")
-                } else if buttonTitle == "(" || buttonTitle.first!.isNumber || (inputText.last! == "(" && buttonTitle == "-") || buttonTitle == ")" || inputText.last! == ")" {
+                } else if inputText.last! == "^" && type == .sqrt {
+                    inputText.append("(√")
+                } else if type == .pOpen || buttonTitle.first!.isNumber || (inputText.last! == "(" && type == .minus) || type == .pClose || type == .sqrt || inputText.last! == ")" {
                     inputText.append(buttonTitle)
                 }
             } else {
-                if inputText == outputText {
-                    if type == .num {
-                        inputText = (buttonTitle)
-                    } else if type == .dot {
-                        inputText = "0."
-                    } else {
-                        inputText.append(buttonTitle)
-                    }
-                } else {
-                    inputText.append(buttonTitle)
-                }
+                inputText.append(buttonTitle)
             }
         }
         calculateResult()
@@ -93,7 +93,7 @@ class CalculatorViewModel: ObservableObject {
     }
     
     func canConvertToArr() -> Bool {
-        if inputText.count > 2 {
+        if inputText.count > 1 {
             arr = []
             var idx = 0
             var temp = ""
@@ -134,8 +134,12 @@ class CalculatorViewModel: ObservableObject {
             }
             
             // MARK: - CAN'T HAVE AN OPERATOR AT THE END FOR CALCULATION
-            if operators.contains(arr.last!) && arr.last! != ")"{
+            while operators.contains(arr.last!) && arr.last! != ")" && arr.count > 1 {
                 arr.removeLast()
+            }
+            if arr.last! == "0." || arr.last == "." {
+                arr.removeLast()
+                arr.append("0")
             }
             
             if numOpenP != numClosedP {
@@ -143,7 +147,7 @@ class CalculatorViewModel: ObservableObject {
                 outputText = "?"
                 return false
             }
-            if arr.count > 2 && arr.contains(where: { element in
+            if arr.count > 1 && arr.contains(where: { element in
                 operators.contains(element)
             }) {
                 return true
@@ -194,10 +198,35 @@ class CalculatorViewModel: ObservableObject {
     
     func doOperations(_ passedArr: [String]) -> String? {
         var tempArr = passedArr
-        print(tempArr)
-        // MARK: - MULTIPLICATION, DIVISION, POWER, & √. LEFT TO RIGHT
-        #warning("SQRT NOT ADDED YET!")
+        // MARK: - POWER, & √. LEFT TO RIGHT
         var idx = 0
+        while idx < tempArr.count {
+            if tempArr[idx] == "^" {
+                let rightVal = tempArr.remove(at: idx+1)
+                tempArr.remove(at: idx)
+                let leftVal = tempArr.remove(at: idx-1)
+                let result = Double(pow(Double(leftVal)!, Double(rightVal)!))
+                tempArr.insert("\(result)", at: idx-1)
+            } else if tempArr[idx] == "√" {
+                let rightVal = tempArr.remove(at: idx+1)
+                tempArr.remove(at: idx)
+                let result = sqrt(Double(rightVal)!)
+                
+                if idx == 0 {
+                    tempArr.insert("\(result)", at: idx)
+                } else if tempArr[idx-1].first!.isNumber {
+                    tempArr.insert("*", at: idx)
+                    tempArr.insert("\(result)", at: idx+1)
+                    
+                } else {
+                    tempArr.insert("\(result)", at: idx)
+                }
+            } else {
+                idx += 1
+            }
+        }
+        // MARK: - MULTIPLICATION, DIVISION
+        idx = 0
         while idx < tempArr.count {
             if tempArr[idx] == "*" {
                 let rightVal = tempArr.remove(at: idx+1)
@@ -230,12 +259,16 @@ class CalculatorViewModel: ObservableObject {
                 let leftVal = tempArr.remove(at: idx-1)
                 let result = Double(leftVal)! + Double(rightVal)!
                 tempArr.insert("\(result)", at: idx-1)
-            } else if tempArr[idx] == "-" {
+            } else if tempArr[idx] == "-" && idx < tempArr.count {
                 let rightVal = tempArr.remove(at: idx+1)
                 tempArr.remove(at: idx)
                 var leftVal = ""
                 // MINUS SIGN CASE "e.g. (-1+2)"
                 if idx == 0 {
+                    leftVal = "0"
+                    let result = Double(leftVal)! - Double(rightVal)!
+                    tempArr.insert("\(result)", at: idx)
+                } else if tempArr[idx-1] == "√" || tempArr[idx-1] == "(" || tempArr[idx-1] == "^" {
                     leftVal = "0"
                     let result = Double(leftVal)! - Double(rightVal)!
                     tempArr.insert("\(result)", at: idx)
@@ -248,7 +281,11 @@ class CalculatorViewModel: ObservableObject {
                 idx += 1
             }
         }
-        print(tempArr)
+        
+        if tempArr.count > 1 {
+            tempArr = ["\(tempArr.map { Double($0)! }.reduce(1, *))"]
+        }
+        
         return(tempArr.first)
     }
 }
